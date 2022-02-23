@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VerifoneVipaVersion": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Development\\DEVICES\\verifone\\VIPA_VERSION\\Source\\application\\bin\\Debug\\netcoreapp3.1\\win10-x64\\VerifoneVipaVersion.exe"
+    }
+  }
+}

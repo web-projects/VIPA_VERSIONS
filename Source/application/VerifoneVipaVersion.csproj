@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>VerifoneVipaVersion</AssemblyName>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <Version>1.0.0.0</Version>
+    <RuntimeIdentifier Condition=" '$(OS)' == 'Windows_NT' ">win10-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(OS)' == 'Unix' ">linux-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Assets\**" />
+    <Compile Remove="Common\**" />
+    <Compile Remove="SerialPort\**" />
+    <EmbeddedResource Remove="Assets\**" />
+    <EmbeddedResource Remove="Common\**" />
+    <EmbeddedResource Remove="SerialPort\**" />
+    <None Remove="Assets\**" />
+    <None Remove="Common\**" />
+    <None Remove="SerialPort\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Polly" Version="7.2.2" />
+    <PackageReference Include="SerialPortStream" Version="2.3.1" />
+    <PackageReference Include="SSH.NET" Version="2020.0.1" />
+    <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\common\core\Core.Patterns\Core.Patterns.csproj" />
+    <ProjectReference Include="..\common\helpers\Helpers.csproj" />
+    <ProjectReference Include="..\common\LoggerManager\LoggerManager.csproj" />
+    <ProjectReference Include="..\common\xo\XO.csproj" />
+    <ProjectReference Include="..\config\Config.csproj" />
+    <ProjectReference Include="..\devices\common\Devices.Common.csproj" />
+    <ProjectReference Include="..\devices\Core\Devices.Core.csproj" />
+    <ProjectReference Include="..\devices\Devices.Sdk\Devices.Sdk.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="%25WINDIR%25\System32\XCOPY /y /i /d &quot;$(SolutionDir)devices\Verifone\bin\$(ConfigurationName)\netcoreapp3.1\Devices.Verifone.dll&quot; &quot;$(TargetDir)DevicePlugins\&quot;&#xD;&#xA;" />
+  </Target>
+
+</Project>

@@ -1,0 +1,49 @@
+﻿syntax = "proto3";
+package XO.ProtoBuf;
+
+message LogMessage {
+    enum LogLevel {
+        TRACE = 0;
+		DEBUG = 1;
+		INFO = 2;
+		WARN = 3;
+		ERROR = 4;
+		CRITICAL = 5;
+    }
+
+	enum LogType {
+		EXCEPTION = 0;
+		MESSAGE = 1;
+		STATUS = 2;
+		INPUT = 3;
+		OUTPUT = 4;
+		INTEGRATIONINPUT = 5;
+		INTEGRATIONOUTPUT = 6;
+		NOTAVAILABLE = 7;
+	}
+
+    map<string, string> parameters = 1;
+    LogLevel log_level = 2;
+	string message = 3;
+	string exception = 4;
+	string assembly_name = 5;
+	LogType log_type = 6;
+	string message_name = 7;//name of the message: Initialization, DeviceStatus,ADA,Event
+	string session_id = 8;
+	string link_request_message_id = 9;
+	string link_action_message_id = 10;
+	string time_stamp = 11;
+	map<string, string> input = 12; 	
+	string output = 13;//output json
+	string class = 14; //current assembly name, internal logging only
+	string function = 15; //current assembly name, internal logging only
+	string target = 16;//target component name
+	string source = 17;//Source component name
+	string host_name = 18;
+	int32 status_code = 19;//status code id
+	int32 status_type = 20;//status type id
+}
+
+message LogBatch {
+	repeated LogMessage logMessages = 1;
+}

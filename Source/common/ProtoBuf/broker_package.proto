@@ -1,0 +1,226 @@
+﻿syntax = "proto3";
+package IPA5.XO.ProtoBuf;
+
+message ChannelData {
+	BrokerMessage BrokerMessage = 1;
+}
+
+message BrokerMessage {
+	CommunicationHeader Header = 1;
+	string StringData = 2;
+	LinkResponse Response = 3;
+	LinkRequest Request = 4;
+	HeartbeatMessage Heartbeat = 5;
+}
+
+message HeartbeatMessage {
+	CommIdentifier SourceComponent = 1;
+	string ChannelId = 2;
+}
+
+enum ConfirmationLevel {
+	UnknownConfirmationLevel = 0;
+	None = 1;
+	BrokerConfirmation = 2;
+	Destination = 3;
+}
+
+enum CommunicationType {
+	UnknownCommunicationType = 0;
+	Administrative = 1;
+	System = 2;
+    Data = 3;
+    Event = 4;
+}
+
+enum CommMessageCode {
+	UnknownCommMessageCode = 0;
+	Subscribe = 1;
+	Unsubscribe = 2;
+	Publish = 3;
+	RequestData = 4;
+	ProvideVelocityCheckResult = 5;
+	ProvideDalAvailableDeviceResult = 6;
+	UpdateConfigCustid = 7;
+	AppManagerBroadcast = 8;
+	RegisterAppManagerFunction = 9;
+	InvokeAppManagerFunction = 10;
+	NotifyAppManagerMessage = 11;
+	UnregisterAppManagerFunction = 12;
+	AppManagerShutDownRequest = 13;
+	AppManagerAllowShutDown = 14;
+}
+
+enum CommStatusCode {
+	UnknownCommStatusCode = 0;
+    SubscriptionAuthSuccess = 1;
+    SubscriptionAuthFailure = 2;
+    SubscriptionAuthFailedBadCredentials = 3;
+    SubscriptionAuthFailedInvalidDALIdentifier = 4;
+    UnsubscribeSuccess = 5;
+    UnsubscribeFailure = 6;
+    CommPostSuccess = 7;
+    CommPostFailure = 8;
+    CommPostNoWait = 9;
+    CommPostTimeout = 10;
+    CommPostFailedInvalidToken = 11;
+}
+
+enum CommEventCode {
+	UnknownCommEventCode = 0;
+    BrokerSubscribeSuccess = 1;
+    BrokerSubscribeFail = 2;
+    ListenerMessageSendSuccess = 3;
+    ListenerMessageSendFail = 4;
+    ListenerOffline = 5;
+    ListenerOnline = 6;
+    DALPinPadEntryReceived = 7;
+    DALCardInserted = 8;
+    DALCardRemoved = 9;
+}
+
+enum ServiceType {
+	UnknownServiceType = 0;
+	DAL = 1;
+	OBSOLETE_Listener = 2;
+	Servicer = 3;
+	Receiver = 4;
+	Monitor = 5;
+	Processor = 6;
+	CryptoCache = 7;
+	Broker = 8;
+	AppManager = 9;
+	Updater = 10;
+}
+
+enum ChannelType {
+	UnknownChannelType = 0;
+	NamedPipes = 1;
+	WebSocket = 2;
+	LongPoll = 3;
+	AzureServiceBus = 4;
+	Isomorphic = 5;
+}
+
+enum LookupPreference {
+	NotSpecified = 0;
+	WorkstationName = 1;
+	DnsName = 2;
+	IPv4 = 3;
+	IPv6 = 4;
+	Username = 5;
+}
+
+message CommunicationHeader {
+	CommunicationType MessageType = 1;
+	oneof EventMessageAction {
+		CommMessageCode MessageAction = 2;
+		CommEventCode EventAction = 3;
+	}
+	repeated CommIdentifier CommIdentifiers = 4;
+	string SenderConnectionClientId = 5;
+	string GlobalComponentId = 6;
+	string ConnectionId = 7;
+	string Version = 8;
+	CommIdentifier Source = 9;
+	CommIdentifier OBSOLETE_Destination = 10;
+	CommAuth CommAuth = 11;
+	ConfirmationLevel ConfirmationLevel = 12;
+	CommFlags Flags = 13;
+	CommHints Hints = 14;
+	string InitialRequestId = 15;
+}
+
+message CommAuth {
+	string JwtToken = 1;
+	string ApiClientKey = 2;
+}
+
+message CommIdentifier {
+	string ConnectionId = 1;
+	string DnsName = 2;
+	string IPv4 = 3;
+	string UserName = 4;
+	string WorkstationName = 5;
+	ServiceType Service = 6;
+	string IPv6 = 7;
+	string ChannelId = 8;
+	ChannelType ChannelType = 9;
+	string LicenseKey = 10;
+	LookupPreference LookupPreference = 11;
+	int32 CompanyId = 12;
+	string MachineFingerprint = 13;
+	bool IsCloud = 14; 
+	string AppVersion = 15;
+	string BrokerOwnerId = 16;
+}
+
+message CommFlags {
+	int32 MessageFlag = 1;
+	int32 AcknowledgementFlag = 2;
+	int32 HeartbeatFlag = 3;
+	int32 TraceFlag = 4;
+	CommReserved Internal = 5;
+	int32 SubscriptionFlag = 6;
+}
+
+message CommHints {
+	repeated CommIdentifier CommIdentifiers = 1;
+	map<string, string> Parameters = 2;
+}
+
+message CommReserved {
+	string Reserved1 = 1;
+	string Reserved2 = 2;
+	string Reserved3 = 3;
+	string Reserved4 = 4;
+	int32 Reserved5 = 5;
+	int32 Reserved6 = 6;
+	int32 Reserved7 = 7;
+	int32 Reserved8 = 8;
+}
+
+message CommResponse {
+	CommStatus Status = 1;
+}
+
+message CommStatus {
+	CommStatusCode StatusCode = 1;
+	string StatusMessage = 2;
+}
+
+message LinkRequest {
+	string MessageId = 1;
+	uint32 CustId = 2;
+	string Password = 3;
+}
+
+message LinkResponse {
+	string MessageId = 1;
+	repeated LinkErrorValue Errors = 2;
+	repeated LinkActionResponse Responses = 3;
+}
+
+message LinkErrorValue {
+	string Code = 1;
+	string Type = 2;
+	string Message = 3;
+}
+
+message LinkActionResponse {
+	string MessageId = 1;
+	string RequestId = 2;
+	repeated LinkErrorValue Errors = 3;
+}
+
+message BrokerMessages {
+	repeated BrokerMessage BrokerMessageList = 1;
+}
+
+message HeartbeatUpdateList {
+	repeated string ConnectionIdList = 1;
+}
+
+message GetConnectionsResponse {
+	repeated CommIdentifier CommIdentifiers = 1;
+}

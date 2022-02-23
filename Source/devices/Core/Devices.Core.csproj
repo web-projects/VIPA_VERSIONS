@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Providers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="System.IO.Ports" Version="4.7.0" />
+    <PackageReference Include="Polly" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\Constants\Constants.csproj" />
+    <ProjectReference Include="..\..\common\core\Core.Patterns\Core.Patterns.csproj" />
+    <ProjectReference Include="..\..\common\LoggerManager\LoggerManager.csproj" />
+    <ProjectReference Include="..\..\config\Config.csproj" />
+    <ProjectReference Include="..\Devices.Sdk\Devices.Sdk.csproj" />
+  </ItemGroup>
+
+</Project>
