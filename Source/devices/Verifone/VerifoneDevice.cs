@@ -302,6 +302,13 @@ namespace Devices.Verifone
         public LinkActionRequest ReportVipaVersions(LinkActionRequest linkActionRequest)
         {
             Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: DISPLAY CUSTOM SCREEN for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            
+            Console.WriteLine("");
+            Console.WriteLine($"VIPA__: {DeviceInformation.FirmwareVersion}");
+            Console.WriteLine($"VAULT_: {DeviceInformation.VOSVersions.ADKVault}");
+            Console.WriteLine($"AppM__: {DeviceInformation.VOSVersions.ADKAppManager}");
+            Console.WriteLine($"VFOPS_: {DeviceInformation.VOSVersions.ADKOpenProtocol}");
+            Console.WriteLine($"VFSRED: {DeviceInformation.VOSVersions.ADKSRED}");
 
             if (VipaDevice != null)
             {
@@ -318,17 +325,20 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        string displayMessage  = $"VIPA__: {DeviceInformation.FirmwareVersion} _____ ";
-                               displayMessage += $"VAULT_: {DeviceInformation.VOSVersions.ADKVault} ";
-                               displayMessage += $"AppM__: {DeviceInformation.VOSVersions.ADKAppManager} ";
-                               displayMessage += $"VFOPS_: {DeviceInformation.VOSVersions.ADKOpenProtocol} ";
-                               displayMessage += $"VFSRED: {DeviceInformation.VOSVersions.ADKSRED}";
+                        string style_pre = "<div style='font-family:monospace; font-size:16px;'>";
+                        string message = $"<p>VIPA__: {DeviceInformation.FirmwareVersion}</p>";
+                        message += $"<p>VAULT_: {DeviceInformation.VOSVersions.ADKVault}</p>";
+                        message += $"<p>AppM__: {DeviceInformation.VOSVersions.ADKAppManager}</p>";
+                        message += $"<p>VFOPS_: {DeviceInformation.VOSVersions.ADKOpenProtocol}</p>";
+                        message += $"<p>VFSRED: {DeviceInformation.VOSVersions.ADKSRED}</p>";
+                        string style_post = "</div>";
+                        string displayMessage = style_pre + message + style_post;
                         (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) showVipaVersionsResponse = VipaDevice.DisplayCustomScreenHTML(displayMessage);
 
                         if (showVipaVersionsResponse.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
-                        //    await Task.Delay(1000);
-                            Thread.Sleep(5000);
+                            //    await Task.Delay(1000);
+                            Thread.Sleep(10000);
                         }
                     }
                 }

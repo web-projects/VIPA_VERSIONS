@@ -71,7 +71,7 @@ namespace DEVICE_CORE
 
             // VIPA VERSION
             await application.Command(LinkDeviceActionType.ReportVipaVersions).ConfigureAwait(false);
-            await Task.Delay(7500);
+            await Task.Delay(15000);
 
             // IDLE SCREEN
             //await application.Command(LinkDeviceActionType.DisplayIdleScreen).ConfigureAwait(false);
